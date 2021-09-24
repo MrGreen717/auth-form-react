@@ -37,7 +37,9 @@ describe('user reducers', () => {
 		}
 
 		const updatedState = loginReducer(undefined, action)
-		expect(updatedState.loginError).toEqual('Wrong password, try again.')
+		expect(updatedState.loginError).toEqual(
+			'*Неверный пароль, попробуйте снова.'
+		)
 	})
 	it('return state', () => {
 		const action = {

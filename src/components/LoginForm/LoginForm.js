@@ -1,19 +1,27 @@
 import React from 'react'
 import * as Yup from 'yup'
-import { Field, Form, Formik } from 'formik'
+import { Form, Formik } from 'formik'
 import { connect } from 'react-redux'
 import { loginRequest } from './../../redux/actions/userActions'
+import { Link } from 'react-router-dom'
+import InputField from '../utils/InputField/InputField'
+import Button from '../utils/Button/Button'
+import RedirectPanel from '../utils/RedirectPanel/RedirectPanel'
+import FormContainer from '../utils/FormContainer/FormContainer'
 
-import './LoginForm.scss'
+import googleIcon from '../icons/Google_Logo.svg'
+import vkIcon from '../icons/Vk_Logo.svg'
 
 function LoginForm({ loginUser, loginError }) {
 	const ValidationSchema = Yup.object().shape({
-		email: Yup.string().email('Invalid email format').required('Required'),
-		password: Yup.string().required('Required')
+		email: Yup.string()
+			.email('*Введите корректный email')
+			.required('*Введите email'),
+		password: Yup.string().required('*Введите пароль')
 	})
 
 	return (
-		<div className="auth">
+		<FormContainer>
 			<Formik
 				initialValues={{
 					password: '',
@@ -22,46 +30,44 @@ function LoginForm({ loginUser, loginError }) {
 				validationSchema={ValidationSchema}
 				onSubmit={loginUser}
 			>
-				{({ errors, touched }) => (
-					<Form className="form">
-						<h1 className="h1">Sign In</h1>
-						<div className="input-panel">
-							<label htmlFor="email" className="label">
-								Email:
-							</label>
-							<Field className="input" id="email" name="email" type="email" />
-						</div>
-						<div className="input-panel">
-							<label htmlFor="password" className="label">
-								Password:
-							</label>
-							<Field
-								className="input"
-								id="password"
-								name="password"
-								type="password"
-							/>
-						</div>
-						{loginError ? (
-							<strong className="error">{loginError}</strong>
+				{({ errors, touched, values }) => (
+					<Form>
+						<h1>Войти</h1>
+						<InputField label="Email" type="email" name="email" />
+						{errors.email && (touched.email || values.email) ? (
+							<strong>{errors.email}</strong>
 						) : null}
-						<div>
-							<button
-								className="button"
-								type="submit"
-								disabled={
-									(!touched.password && !touched.email) ||
-									errors.password ||
-									errors.email
-								}
-							>
-								Sign In
-							</button>
-						</div>
+						<InputField label="Пароль" type="password" name="password" />
+						{errors.password && (touched.password || values.password) ? (
+							<strong>{errors.password}</strong>
+						) : null}
+
+						<div>{loginError ? <strong>{loginError}</strong> : null}</div>
+
+						<Button
+							label="Войти"
+							type="submit"
+							disabled={
+								(!values.password && !values.email) ||
+								errors.password ||
+								errors.email
+							}
+						/>
+						<RedirectPanel>
+							<Link to="signup">
+								<Button label="Зарегистрироваться" type="button" />
+							</Link>
+							<img src={googleIcon} alt="google logo" />
+							<img src={vkIcon} alt="vk logo" />
+
+							<Link to="account-recovery">
+								<Button label="Забыли пароль?" type="button" />
+							</Link>
+						</RedirectPanel>
 					</Form>
 				)}
 			</Formik>
-		</div>
+		</FormContainer>
 	)
 }
 

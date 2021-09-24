@@ -1,0 +1,22 @@
+.button {
+	padding: 10px;
+	width: 100%;
+	margin-top: 1.5rem;
+	border: 0;
+	border-radius: 5px;
+	background-color: white;
+
+	&:enabled:hover {
+		background-color: rgb(218, 218, 218);
+	}
+
+	&:enabled:active {
+		background-color: white;
+	}
+
+	&:disabled {
+		background-color: rgb(150, 150, 150);
+		color: rgb(94, 94, 94);
+		cursor: not-allowed;
+	}
+}

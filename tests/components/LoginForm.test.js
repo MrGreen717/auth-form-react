@@ -6,6 +6,7 @@ import { Provider } from 'react-redux'
 import { mapDispatchToProps } from './../../src/components/LoginForm/LoginForm'
 import { loginRequest } from './../../src/redux/actions/userActions'
 import { waitFor } from '@testing-library/react'
+import { BrowserRouter } from 'react-router-dom'
 
 describe('<LoginForm />', () => {
 	const mockStore = configureStore()
@@ -13,9 +14,11 @@ describe('<LoginForm />', () => {
 	it('login component was rendered', () => {
 		const store = mockStore({})
 		const wrapper = mount(
-			<Provider store={store}>
-				<LoginForm />
-			</Provider>
+			<BrowserRouter>
+				<Provider store={store}>
+					<LoginForm />
+				</Provider>
+			</BrowserRouter>
 		)
 
 		expect(wrapper).toBeDefined()
@@ -33,9 +36,11 @@ describe('<LoginForm />', () => {
 		const handleSubmit = jest.fn()
 		const store = mockStore({})
 		const wrapper = mount(
-			<Provider store={store}>
-				<LoginForm />
-			</Provider>
+			<BrowserRouter>
+				<Provider store={store}>
+					<LoginForm />
+				</Provider>
+			</BrowserRouter>
 		)
 
 		wrapper.find('form').simulate('submit', { preventDefault: handleSubmit })
@@ -50,9 +55,11 @@ describe('<LoginForm />', () => {
 		const store = mockStore(initialState)
 
 		const wrapper = mount(
-			<Provider store={store}>
-				<LoginForm />
-			</Provider>
+			<BrowserRouter>
+				<Provider store={store}>
+					<LoginForm />
+				</Provider>
+			</BrowserRouter>
 		)
 
 		await waitFor(() => {

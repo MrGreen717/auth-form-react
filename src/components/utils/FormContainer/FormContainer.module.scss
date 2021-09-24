@@ -1,0 +1,25 @@
+.auth {
+	display: flex;
+	justify-content: center;
+
+	form {
+		max-width: 400px;
+		width: 100%;
+		padding: 2rem 2rem 1.5rem 2rem;
+		background-color: #2c4597;
+		margin-top: 3rem;
+		border-radius: 5px;
+
+		h1 {
+			margin: 0;
+			display: flex;
+			justify-content: center;
+			color: white;
+		}
+
+		strong {
+			color: white;
+			margin-bottom: 0;
+		}
+	}
+}

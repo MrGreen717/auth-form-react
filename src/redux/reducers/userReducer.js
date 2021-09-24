@@ -17,7 +17,10 @@ const loginReducer = (state = initialState, action) => {
 			return { ...state, loginError: null }
 
 		case FETCH_MESSAGES_FAILURE:
-			return { ...initialState, loginError: 'Wrong password, try again.' }
+			return {
+				...initialState,
+				loginError: '*Неверный пароль, попробуйте снова.'
+			}
 
 		default:
 			return state

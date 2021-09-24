@@ -1,0 +1,22 @@
+.input-panel {
+	margin-top: 1rem;
+
+	.label {
+		color: white;
+		margin-bottom: 0;
+	}
+
+	.input {
+		box-sizing: border-box;
+		margin-top: 5px;
+		width: 100%;
+		height: 30px;
+		padding: 5px;
+		border: 0;
+		border-radius: 5px;
+
+		&:focus {
+			outline: none;
+		}
+	}
+}
