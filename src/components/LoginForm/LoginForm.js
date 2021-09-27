@@ -2,17 +2,20 @@ import React from 'react'
 import * as Yup from 'yup'
 import { Form, Formik } from 'formik'
 import { connect } from 'react-redux'
-import { loginRequest } from './../../redux/actions/userActions'
+import { loginRequest, clearMessages } from './../../redux/actions/userActions'
 import { Link } from 'react-router-dom'
 import InputField from '../utils/InputField/InputField'
 import Button from '../utils/Button/Button'
 import RedirectPanel from '../utils/RedirectPanel/RedirectPanel'
 import FormContainer from '../utils/FormContainer/FormContainer'
 
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
 import googleIcon from '../icons/Google_Logo.svg'
 import vkIcon from '../icons/Vk_Logo.svg'
 
-function LoginForm({ loginUser, loginError }) {
+function LoginForm({ loginUser, loginMessage, clearMessagesValue }) {
 	const ValidationSchema = Yup.object().shape({
 		email: Yup.string()
 			.email('*Введите корректный email')
@@ -42,7 +45,7 @@ function LoginForm({ loginUser, loginError }) {
 							<strong>{errors.password}</strong>
 						) : null}
 
-						<div>{loginError ? <strong>{loginError}</strong> : null}</div>
+						<div>{loginMessage ? <strong>{loginMessage}</strong> : null}</div>
 
 						<Button
 							label="Войти"
@@ -55,25 +58,34 @@ function LoginForm({ loginUser, loginError }) {
 						/>
 						<RedirectPanel>
 							<Link to="signup">
-								<Button label="Зарегистрироваться" type="button" />
+								<Button
+									label="Зарегистрироваться"
+									type="submit"
+									onSubmit={clearMessagesValue}
+								/>
 							</Link>
 							<img src={googleIcon} alt="google logo" />
 							<img src={vkIcon} alt="vk logo" />
 
 							<Link to="account-recovery">
-								<Button label="Забыли пароль?" type="button" />
+								<Button
+									label="Забыли пароль?"
+									type="submit"
+									onSubmit={clearMessagesValue}
+								/>
 							</Link>
 						</RedirectPanel>
 					</Form>
 				)}
 			</Formik>
+			<ToastContainer />
 		</FormContainer>
 	)
 }
 
 const mapStateToProps = (state) => {
 	return {
-		loginError: state.loginError
+		loginMessage: state.loginMessage
 	}
 }
 
@@ -81,6 +93,9 @@ export const mapDispatchToProps = (dispatch) => {
 	return {
 		loginUser: (value) => {
 			dispatch(loginRequest(value))
+		},
+		clearMessagesValue: () => {
+			dispatch(clearMessages())
 		}
 	}
 }

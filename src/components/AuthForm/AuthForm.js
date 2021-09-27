@@ -1,13 +1,15 @@
 import React from 'react'
 import * as Yup from 'yup'
+import { Link } from 'react-router-dom'
+import { clearMessages, signUpRequest } from './../../redux/actions/userActions'
+import { connect } from 'react-redux'
 import { Form, Formik } from 'formik'
+import FormContainer from '../utils/FormContainer/FormContainer'
 import InputField from '../utils/InputField/InputField'
 import RedirectPanel from '../utils/RedirectPanel/RedirectPanel'
 import Button from '../utils/Button/Button'
-import FormContainer from '../utils/FormContainer/FormContainer'
-import { Link } from 'react-router-dom'
 
-function AuthForm() {
+function AuthForm({ signUpUser, signUpMessage, clearMessagesValue }) {
 	const ValidationSchema = Yup.object().shape({
 		email: Yup.string()
 			.email('*Введите корректный email')
@@ -28,10 +30,6 @@ function AuthForm() {
 			.required('*Подтвердите пароль')
 	})
 
-	const auth = (values) => {
-		console.log(values)
-	}
-
 	return (
 		<FormContainer>
 			<Formik
@@ -41,7 +39,7 @@ function AuthForm() {
 					email: ''
 				}}
 				validationSchema={ValidationSchema}
-				onSubmit={auth}
+				onSubmit={signUpUser}
 			>
 				{({ errors, touched, values }) => (
 					<Form>
@@ -63,6 +61,7 @@ function AuthForm() {
 						(touched.confirmPassword || values.confirmPassword) ? (
 							<strong>{errors.confirmPassword}</strong>
 						) : null}
+						<div>{signUpMessage ? <strong>{signUpMessage}</strong> : null}</div>
 						<Button
 							label="Зарегистрироваться"
 							type="submit"
@@ -77,10 +76,18 @@ function AuthForm() {
 						/>
 						<RedirectPanel>
 							<Link to="/">
-								<Button label="Войти" type="button" />
+								<Button
+									label="Войти"
+									type="button"
+									onSubmit={clearMessagesValue}
+								/>
 							</Link>
 							<Link to="/account-recovery">
-								<Button label="Забыли пароль?" type="button" />
+								<Button
+									label="Забыли пароль?"
+									type="button"
+									onSubmit={clearMessagesValue}
+								/>
 							</Link>
 						</RedirectPanel>
 					</Form>
@@ -90,4 +97,21 @@ function AuthForm() {
 	)
 }
 
-export default AuthForm
+const mapStateToProps = (state) => {
+	return {
+		signUpMessage: state.signUpMessage
+	}
+}
+
+export const mapDispatchToProps = (dispatch) => {
+	return {
+		signUpUser: (value) => {
+			dispatch(signUpRequest(value))
+		},
+		clearMessagesValue: () => {
+			dispatch(clearMessages())
+		}
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(AuthForm)

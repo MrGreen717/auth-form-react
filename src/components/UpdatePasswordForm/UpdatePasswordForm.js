@@ -1,13 +1,20 @@
 import React from 'react'
 import * as Yup from 'yup'
 import { Form, Formik } from 'formik'
-import { Link } from 'react-router-dom'
+import { updatePasswordRequest } from './../../redux/actions/userActions'
+import { connect } from 'react-redux'
+import qs from 'query-string'
 import InputField from '../utils/InputField/InputField'
-import RedirectPanel from '../utils/RedirectPanel/RedirectPanel'
 import Button from '../utils/Button/Button'
 import FormContainer from '../utils/FormContainer/FormContainer'
 
-function UpdatePasswordForm() {
+import { ToastContainer } from 'react-toastify'
+import 'react-toastify/dist/ReactToastify.css'
+
+function UpdatePasswordForm(props) {
+	const { changePassword, updatePasswordMessage } = props
+	const code = qs.parse(props.location.search).oobCode
+
 	const ValidationSchema = Yup.object().shape({
 		password: Yup.string()
 			.min(8, '*Пароль должен содержать не менее 8 символов')
@@ -25,10 +32,6 @@ function UpdatePasswordForm() {
 			.required('*Подтвердите пароль')
 	})
 
-	const auth = (values) => {
-		console.log(values)
-	}
-
 	return (
 		<FormContainer>
 			<Formik
@@ -37,7 +40,7 @@ function UpdatePasswordForm() {
 					confirmPassword: ''
 				}}
 				validationSchema={ValidationSchema}
-				onSubmit={auth}
+				onSubmit={(value) => changePassword(value, code)}
 			>
 				{({ errors, touched, values }) => (
 					<Form>
@@ -55,6 +58,11 @@ function UpdatePasswordForm() {
 						(touched.confirmPassword || values.confirmPassword) ? (
 							<strong>{errors.confirmPassword}</strong>
 						) : null}
+						<div>
+							{updatePasswordMessage ? (
+								<strong>{updatePasswordMessage}</strong>
+							) : null}
+						</div>
 						<Button
 							label="Обновить пароль"
 							type="submit"
@@ -64,19 +72,27 @@ function UpdatePasswordForm() {
 								errors.confirmPassword
 							}
 						/>
-						<RedirectPanel>
-							<Link to="/">
-								<Button label="Войти" type="button" />
-							</Link>
-							<Link to="/signup">
-								<Button label="Регистрация" type="button" />
-							</Link>
-						</RedirectPanel>
 					</Form>
 				)}
 			</Formik>
+
+			<ToastContainer />
 		</FormContainer>
 	)
 }
 
-export default UpdatePasswordForm
+const mapStateToProps = (state) => {
+	return {
+		updatePasswordMessage: state.updatePasswordMessage
+	}
+}
+
+export const mapDispatchToProps = (dispatch) => {
+	return {
+		changePassword: (value, code) => {
+			dispatch(updatePasswordRequest(value, code))
+		}
+	}
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(UpdatePasswordForm)

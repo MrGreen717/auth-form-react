@@ -4,7 +4,10 @@ import React from 'react'
 import configureStore from 'redux-mock-store'
 import { Provider } from 'react-redux'
 import { mapDispatchToProps } from './../../src/components/LoginForm/LoginForm'
-import { loginRequest } from './../../src/redux/actions/userActions'
+import {
+	loginRequest,
+	clearMessages
+} from './../../src/redux/actions/userActions'
 import { waitFor } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
 
@@ -25,11 +28,13 @@ describe('<LoginForm />', () => {
 		expect(wrapper.find('form')).toHaveLength(1)
 	})
 
-	it('dispatch action', () => {
+	it('dispatch login action', () => {
 		const dispatch = jest.fn()
 
 		mapDispatchToProps(dispatch).loginUser()
+		mapDispatchToProps(dispatch).clearMessagesValue()
 		expect(dispatch.mock.calls[0][0]).toEqual(loginRequest())
+		expect(dispatch.mock.calls[1][0]).toEqual(clearMessages())
 	})
 
 	it('submit form', async () => {
@@ -51,7 +56,7 @@ describe('<LoginForm />', () => {
 	})
 
 	it('error rendered', async () => {
-		const initialState = { loginError: 'Wrong password, try again.' }
+		const initialState = { loginMessage: '*Неверный пароль, попробуйте снова.' }
 		const store = mockStore(initialState)
 
 		const wrapper = mount(

@@ -2,9 +2,14 @@ import React from 'react'
 
 import styles from './Button.module.scss'
 
-const Button = ({ label, type, disabled }) => {
+const Button = ({ label, type, disabled, onSubmit }) => {
 	return (
-		<button className={styles.button} type={type} disabled={disabled}>
+		<button
+			className={styles.button}
+			type={type}
+			disabled={disabled}
+			onClick={onSubmit}
+		>
 			{label}
 		</button>
 	)
