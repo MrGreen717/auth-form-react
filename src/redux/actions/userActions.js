@@ -21,6 +21,18 @@ export const loginError = (error) => {
 	}
 }
 
+export const googleAuthRequest = () => {
+	return {
+		type: types.FETCH_GOOGLE_AUTH_REQUEST
+	}
+}
+
+export const googleAuthSuccess = () => {
+	return {
+		type: types.FETCH_GOOGLE_AUTH_SUCCESS
+	}
+}
+
 export const signUpRequest = (user) => {
 	return {
 		type: types.FETCH_SIGNUP_REQUEST,

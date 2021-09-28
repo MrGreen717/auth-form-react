@@ -6,7 +6,8 @@ import { Provider } from 'react-redux'
 import { mapDispatchToProps } from './../../src/components/LoginForm/LoginForm'
 import {
 	loginRequest,
-	clearMessages
+	clearMessages,
+	googleAuthRequest
 } from './../../src/redux/actions/userActions'
 import { waitFor } from '@testing-library/react'
 import { BrowserRouter } from 'react-router-dom'
@@ -33,8 +34,10 @@ describe('<LoginForm />', () => {
 
 		mapDispatchToProps(dispatch).loginUser()
 		mapDispatchToProps(dispatch).clearMessagesValue()
+		mapDispatchToProps(dispatch).googleAuth()
 		expect(dispatch.mock.calls[0][0]).toEqual(loginRequest())
 		expect(dispatch.mock.calls[1][0]).toEqual(clearMessages())
+		expect(dispatch.mock.calls[2][0]).toEqual(googleAuthRequest())
 	})
 
 	it('submit form', async () => {

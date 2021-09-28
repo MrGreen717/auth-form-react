@@ -41,6 +41,30 @@ describe('user reducers', () => {
 			)
 		})
 	})
+	describe('google auth', () => {
+		it('google auth request', () => {
+			const action = {
+				type: types.FETCH_GOOGLE_AUTH_REQUEST
+			}
+
+			const updatedState = loginReducer(undefined, action)
+			expect(updatedState.loginMessage).toEqual(null)
+			expect(updatedState.signUpMessage).toEqual(null)
+			expect(updatedState.updatePasswordMessage).toEqual(null)
+			expect(updatedState.recoverPasswordMessage).toEqual(null)
+		})
+		it('google auth success', () => {
+			const action = {
+				type: types.FETCH_GOOGLE_AUTH_SUCCESS
+			}
+
+			const updatedState = loginReducer(undefined, action)
+			expect(updatedState.loginMessage).toEqual(null)
+			expect(updatedState.signUpMessage).toEqual(null)
+			expect(updatedState.updatePasswordMessage).toEqual(null)
+			expect(updatedState.recoverPasswordMessage).toEqual(null)
+		})
+	})
 	describe('signup', () => {
 		it('sign up request', () => {
 			const action = {

@@ -9,6 +9,12 @@
 		text-decoration: none;
 	}
 
+	img {
+		&:hover {
+			cursor: pointer;
+		}
+	}
+
 	button {
 		box-sizing: border-box;
 		width: fit-content;

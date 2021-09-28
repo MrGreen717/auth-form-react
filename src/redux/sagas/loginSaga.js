@@ -2,10 +2,12 @@ import {
 	confirmPasswordReset,
 	createUserWithEmailAndPassword,
 	sendPasswordResetEmail,
-	signInWithEmailAndPassword
+	signInWithEmailAndPassword,
+	signInWithPopup
 } from 'firebase/auth'
 import {
 	clearMessagesSuccess,
+	googleAuthSuccess,
 	loginError,
 	loginSuccess,
 	recoverPasswordError,
@@ -20,15 +22,20 @@ import {
 	FETCH_MESSAGES_REQUEST,
 	FETCH_SIGNUP_REQUEST,
 	FETCH_UPDATE_PASSWORD_REQUEST,
-	FETCH_RECOVER_PASSWORD_REQUEST
+	FETCH_RECOVER_PASSWORD_REQUEST,
+	FETCH_GOOGLE_AUTH_REQUEST
 } from '../constants/constants'
 import { takeLatest, put, call, all } from '@redux-saga/core/effects'
-import { auth } from './../../firebase/firebase'
+import { auth, provider } from './../../firebase/firebase'
 import { history } from '../store'
 import * as notify from './../../toastify/notifications'
 
 const loginUser = async (value) => {
 	await signInWithEmailAndPassword(auth, value.user.email, value.user.password)
+}
+
+const googleAuth = async () => {
+	await signInWithPopup(auth, provider)
 }
 
 const signUpUser = async (value) => {
@@ -58,6 +65,16 @@ function* signInWorker(action) {
 		const error_message = { code: error.code, message: error.message }
 
 		yield put(loginError(error_message))
+	}
+}
+
+function* googleAuthWorker(action) {
+	try {
+		const result = yield call(googleAuth, action)
+		yield put(googleAuthSuccess(result))
+		history.push('/chat')
+	} catch (error) {
+		console.error(error)
 	}
 }
 
@@ -103,6 +120,10 @@ function* watchLogin() {
 	yield takeLatest(FETCH_MESSAGES_REQUEST, signInWorker)
 }
 
+function* watchGoogleAuth() {
+	yield takeLatest(FETCH_GOOGLE_AUTH_REQUEST, googleAuthWorker)
+}
+
 function* watchAuth() {
 	yield takeLatest(FETCH_SIGNUP_REQUEST, signUpWorker)
 }
@@ -125,6 +146,7 @@ export default function* loginSaga() {
 		watchAuth(),
 		watchUpdatePassword(),
 		watchRecoverPassword(),
-		watchClearMessages()
+		watchClearMessages(),
+		watchGoogleAuth()
 	])
 }

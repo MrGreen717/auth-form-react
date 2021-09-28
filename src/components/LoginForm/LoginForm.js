@@ -2,7 +2,11 @@ import React from 'react'
 import * as Yup from 'yup'
 import { Form, Formik } from 'formik'
 import { connect } from 'react-redux'
-import { loginRequest, clearMessages } from './../../redux/actions/userActions'
+import {
+	loginRequest,
+	clearMessages,
+	googleAuthRequest
+} from './../../redux/actions/userActions'
 import { Link } from 'react-router-dom'
 import InputField from '../utils/InputField/InputField'
 import Button from '../utils/Button/Button'
@@ -15,7 +19,12 @@ import 'react-toastify/dist/ReactToastify.css'
 import googleIcon from '../icons/Google_Logo.svg'
 import vkIcon from '../icons/Vk_Logo.svg'
 
-function LoginForm({ loginUser, loginMessage, clearMessagesValue }) {
+function LoginForm({
+	loginUser,
+	loginMessage,
+	clearMessagesValue,
+	googleAuth
+}) {
 	const ValidationSchema = Yup.object().shape({
 		email: Yup.string()
 			.email('*Введите корректный email')
@@ -64,7 +73,7 @@ function LoginForm({ loginUser, loginMessage, clearMessagesValue }) {
 									onSubmit={clearMessagesValue}
 								/>
 							</Link>
-							<img src={googleIcon} alt="google logo" />
+							<img src={googleIcon} alt="google logo" onClick={googleAuth} />
 							<img src={vkIcon} alt="vk logo" />
 
 							<Link to="account-recovery">
@@ -96,6 +105,9 @@ export const mapDispatchToProps = (dispatch) => {
 		},
 		clearMessagesValue: () => {
 			dispatch(clearMessages())
+		},
+		googleAuth: () => {
+			dispatch(googleAuthRequest())
 		}
 	}
 }

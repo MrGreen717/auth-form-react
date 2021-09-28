@@ -21,6 +21,12 @@ const loginReducer = (state = initialState, action) => {
 				loginMessage: '*Неверный пароль, попробуйте снова.'
 			}
 
+		case types.FETCH_GOOGLE_AUTH_REQUEST:
+			return { ...state }
+
+		case types.FETCH_GOOGLE_AUTH_SUCCESS:
+			return { ...state }
+
 		case types.FETCH_SIGNUP_REQUEST:
 			return { ...state, signUpMessage: null }
 

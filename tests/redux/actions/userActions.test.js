@@ -50,6 +50,26 @@ describe('login store redux', () => {
 				expect(store.getActions()).toEqual(expectedAction)
 			})
 		})
+		describe('google auth actions', () => {
+			it('google auth request action', () => {
+				const expectedAction = [
+					{
+						type: types.FETCH_GOOGLE_AUTH_REQUEST
+					}
+				]
+				store.dispatch(actions.googleAuthRequest())
+				expect(store.getActions()).toEqual(expectedAction)
+			})
+			it('google auth success action', () => {
+				const expectedAction = [
+					{
+						type: types.FETCH_GOOGLE_AUTH_SUCCESS
+					}
+				]
+				store.dispatch(actions.googleAuthSuccess())
+				expect(store.getActions()).toEqual(expectedAction)
+			})
+		})
 		describe('signup actions', () => {
 			it('signup request action', () => {
 				const expectedAction = [

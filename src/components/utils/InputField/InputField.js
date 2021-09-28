@@ -9,7 +9,13 @@ const InputField = ({ label, type, name }) => {
 			<label htmlFor={name} className="label">
 				{label}:
 			</label>
-			<Field className="input" id={name} name={name} type={type} />
+			<Field
+				className="input"
+				id={name}
+				name={name}
+				type={type}
+				autoComplete="on"
+			/>
 		</div>
 	)
 }
