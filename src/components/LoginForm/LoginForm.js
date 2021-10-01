@@ -17,7 +17,6 @@ import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css'
 
 import googleIcon from '../icons/Google_Logo.svg'
-import vkIcon from '../icons/Vk_Logo.svg'
 
 function LoginForm({
 	loginUser,
@@ -74,7 +73,6 @@ function LoginForm({
 								/>
 							</Link>
 							<img src={googleIcon} alt="google logo" onClick={googleAuth} />
-							<img src={vkIcon} alt="vk logo" />
 
 							<Link to="account-recovery">
 								<Button
