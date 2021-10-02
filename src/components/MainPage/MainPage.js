@@ -2,14 +2,21 @@ import React from 'react'
 
 import styles from './MainPage.module.scss'
 import Button from './../utils/Button/Button'
+import { logOutRequest } from '../../redux/actions/userActions'
+import { connect } from 'react-redux'
 
-function MainPage() {
+function MainPage({ logOut }) {
 	return (
 		<div className={styles.mainPage}>
 			<header className={styles.header}>
 				<div className={styles.userInfo}>
 					<div className={styles.email}>email</div>
-					<Button className={styles.button} label="Выход" type="submit" />
+					<Button
+						className={styles.button}
+						label="Выход"
+						type="submit"
+						onSubmit={logOut}
+					/>
 				</div>
 				<div className={styles.infoPanel}>
 					<h1>Some information</h1>
@@ -27,4 +34,12 @@ function MainPage() {
 	)
 }
 
-export default MainPage
+export const mapDispatchToProps = (dispatch) => {
+	return {
+		logOut: () => {
+			dispatch(logOutRequest())
+		}
+	}
+}
+
+export default connect(null, mapDispatchToProps)(MainPage)

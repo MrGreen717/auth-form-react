@@ -7,10 +7,10 @@ export const loginRequest = (user) => {
 	}
 }
 
-export const loginSuccess = (user) => {
+export const loginSuccess = (result, token) => {
 	return {
 		type: types.FETCH_MESSAGES_SUCCESS,
-		user
+		token
 	}
 }
 
@@ -27,9 +27,10 @@ export const googleAuthRequest = () => {
 	}
 }
 
-export const googleAuthSuccess = () => {
+export const googleAuthSuccess = (result, token) => {
 	return {
-		type: types.FETCH_GOOGLE_AUTH_SUCCESS
+		type: types.FETCH_GOOGLE_AUTH_SUCCESS,
+		token
 	}
 }
 
@@ -40,10 +41,11 @@ export const signUpRequest = (user) => {
 	}
 }
 
-export const signUpSuccess = (user) => {
+export const signUpSuccess = (user, token) => {
 	return {
 		type: types.FETCH_SIGNUP_SUCCESS,
-		user
+		user,
+		token
 	}
 }
 
@@ -106,5 +108,17 @@ export const clearMessages = () => {
 export const clearMessagesSuccess = () => {
 	return {
 		type: types.FETCH_CLEAR_MESSAGES_SUCCESS
+	}
+}
+
+export const logOutRequest = () => {
+	return {
+		type: types.FETCH_LOGOUT_REQUEST
+	}
+}
+
+export const logOutSuccess = () => {
+	return {
+		type: types.FETCH_LOGOUT_SUCCESS
 	}
 }

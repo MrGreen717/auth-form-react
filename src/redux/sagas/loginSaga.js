@@ -3,13 +3,15 @@ import {
 	createUserWithEmailAndPassword,
 	sendPasswordResetEmail,
 	signInWithEmailAndPassword,
-	signInWithPopup
+	signInWithPopup,
+	signOut
 } from 'firebase/auth'
 import {
 	clearMessagesSuccess,
 	googleAuthSuccess,
 	loginError,
 	loginSuccess,
+	logOutSuccess,
 	recoverPasswordError,
 	recoverPasswordSuccess,
 	signUpSuccess,
@@ -23,7 +25,8 @@ import {
 	FETCH_SIGNUP_REQUEST,
 	FETCH_UPDATE_PASSWORD_REQUEST,
 	FETCH_RECOVER_PASSWORD_REQUEST,
-	FETCH_GOOGLE_AUTH_REQUEST
+	FETCH_GOOGLE_AUTH_REQUEST,
+	FETCH_LOGOUT_REQUEST
 } from '../constants/constants'
 import { takeLatest, put, call, all } from '@redux-saga/core/effects'
 import { auth, provider } from './../../firebase/firebase'
@@ -31,6 +34,7 @@ import { history } from '../store'
 import * as notify from './../../toastify/notifications'
 
 const loginUser = async (value) => {
+	console.log('VALUE: ', value)
 	await signInWithEmailAndPassword(auth, value.user.email, value.user.password)
 }
 
@@ -54,12 +58,16 @@ const recoverPassword = async (value) => {
 	await sendPasswordResetEmail(auth, value.email.email)
 }
 
+const logOut = async () => {
+	await signOut(auth)
+}
+
 const clearMessagesValue = () => {}
 
 function* signInWorker(action) {
 	try {
 		const result = yield call(loginUser, action)
-		yield put(loginSuccess(result))
+		yield put(loginSuccess(result, auth.currentUser.accessToken))
 		history.push('/chat')
 	} catch (error) {
 		const error_message = { code: error.code, message: error.message }
@@ -71,7 +79,7 @@ function* signInWorker(action) {
 function* googleAuthWorker(action) {
 	try {
 		const result = yield call(googleAuth, action)
-		yield put(googleAuthSuccess(result))
+		yield put(googleAuthSuccess(result, auth.currentUser.accessToken))
 		history.push('/chat')
 	} catch (error) {
 		console.error(error)
@@ -81,7 +89,7 @@ function* googleAuthWorker(action) {
 function* signUpWorker(action) {
 	try {
 		const result = yield call(signUpUser, action)
-		yield put(signUpSuccess(result))
+		yield put(signUpSuccess(result, auth.currentUser.accessToken))
 		history.push('/chat')
 	} catch (error) {
 		const error_message = { code: error.code, message: error.message }
@@ -111,6 +119,16 @@ function* recoverPasswordWorker(action) {
 	}
 }
 
+function* logOutWorker(action) {
+	try {
+		const result = yield call(logOut, action)
+		yield put(logOutSuccess(result))
+		history.push('/')
+	} catch (error) {
+		console.log(error)
+	}
+}
+
 function* clearWorker(action) {
 	const result = yield call(clearMessagesValue, action)
 	yield put(clearMessagesSuccess(result))
@@ -136,6 +154,10 @@ function* watchRecoverPassword() {
 	yield takeLatest(FETCH_RECOVER_PASSWORD_REQUEST, recoverPasswordWorker)
 }
 
+function* watchLogOut() {
+	yield takeLatest(FETCH_LOGOUT_REQUEST, logOutWorker)
+}
+
 function* watchClearMessages() {
 	yield takeLatest(FETCH_CLEAR_MESSAGES, clearWorker)
 }
@@ -147,6 +169,7 @@ export default function* loginSaga() {
 		watchUpdatePassword(),
 		watchRecoverPassword(),
 		watchClearMessages(),
-		watchGoogleAuth()
+		watchGoogleAuth(),
+		watchLogOut()
 	])
 }
