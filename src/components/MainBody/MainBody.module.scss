@@ -1,0 +1,13 @@
+main {
+	padding: 0 15px 15px 30px;
+	grid-area: main;
+	background-color: #ffffff;
+
+	.body {
+		box-sizing: border-box;
+		padding: 10px;
+		height: 100%;
+		background-color: #e6e6e6;
+		border-radius: 15px;
+	}
+}
