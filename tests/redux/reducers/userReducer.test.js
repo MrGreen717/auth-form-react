@@ -159,6 +159,28 @@ describe('user reducers', () => {
 			)
 		})
 	})
+
+	describe('logout', () => {
+		it('logout request', () => {
+			const action = {
+				type: types.FETCH_LOGOUT_REQUEST
+			}
+
+			const updatedState = loginReducer(undefined, action)
+			expect(updatedState.user).toEqual(null)
+			expect(updatedState.token).toEqual(null)
+		})
+		it('logout success', () => {
+			const action = {
+				type: types.FETCH_LOGOUT_SUCCESS
+			}
+
+			const updatedState = loginReducer(undefined, action)
+			expect(updatedState.user).toEqual(null)
+			expect(updatedState.token).toEqual(null)
+		})
+	})
+
 	describe('clear messages requests', () => {
 		it('recover password request', () => {
 			const action = {

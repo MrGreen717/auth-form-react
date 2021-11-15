@@ -43,7 +43,7 @@ export const signUpRequest = (user) => {
 	}
 }
 
-export const signUpSuccess = (userAuth) => {
+export const signUpSuccess = (result, userAuth) => {
 	return {
 		type: types.FETCH_SIGNUP_SUCCESS,
 		token: userAuth.accessToken,

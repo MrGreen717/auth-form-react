@@ -9,7 +9,8 @@ describe('login store redux', () => {
 
 	const user = {
 		email: 'testuser@gmail.com',
-		password: '123456'
+		password: '123456',
+		accessToken: '123456abcdefg'
 	}
 
 	const code = '123456'
@@ -34,10 +35,11 @@ describe('login store redux', () => {
 				const expectedAction = [
 					{
 						type: types.FETCH_MESSAGES_SUCCESS,
-						user
+						user,
+						token: user.accessToken
 					}
 				]
-				store.dispatch(actions.loginSuccess(user))
+				store.dispatch(actions.loginSuccess(null, user))
 				expect(store.getActions()).toEqual(expectedAction)
 			})
 			it('login error action', () => {
@@ -63,10 +65,12 @@ describe('login store redux', () => {
 			it('google auth success action', () => {
 				const expectedAction = [
 					{
-						type: types.FETCH_GOOGLE_AUTH_SUCCESS
+						type: types.FETCH_GOOGLE_AUTH_SUCCESS,
+						user,
+						token: user.accessToken
 					}
 				]
-				store.dispatch(actions.googleAuthSuccess())
+				store.dispatch(actions.googleAuthSuccess(null, user))
 				expect(store.getActions()).toEqual(expectedAction)
 			})
 		})
@@ -85,10 +89,11 @@ describe('login store redux', () => {
 				const expectedAction = [
 					{
 						type: types.FETCH_SIGNUP_SUCCESS,
-						user
+						user,
+						token: user.accessToken
 					}
 				]
-				store.dispatch(actions.signUpSuccess(user))
+				store.dispatch(actions.signUpSuccess(null, user))
 				expect(store.getActions()).toEqual(expectedAction)
 			})
 			it('signup error action', () => {
@@ -181,6 +186,26 @@ describe('login store redux', () => {
 					}
 				]
 				store.dispatch(actions.clearMessagesSuccess(user))
+				expect(store.getActions()).toEqual(expectedAction)
+			})
+		})
+		describe('logout actions', () => {
+			it('logout request action', () => {
+				const expectedAction = [
+					{
+						type: types.FETCH_LOGOUT_REQUEST
+					}
+				]
+				store.dispatch(actions.logOutRequest(user))
+				expect(store.getActions()).toEqual(expectedAction)
+			})
+			it('logout success action', () => {
+				const expectedAction = [
+					{
+						type: types.FETCH_LOGOUT_SUCCESS
+					}
+				]
+				store.dispatch(actions.logOutSuccess(user))
 				expect(store.getActions()).toEqual(expectedAction)
 			})
 		})

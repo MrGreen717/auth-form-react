@@ -34,7 +34,6 @@ import { history } from '../store'
 import * as notify from './../../toastify/notifications'
 
 const loginUser = async (value) => {
-	console.log('VALUE: ', value)
 	await signInWithEmailAndPassword(auth, value.user.email, value.user.password)
 }
 

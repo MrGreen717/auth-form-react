@@ -5,7 +5,6 @@ import { connect } from 'react-redux'
 import styles from './MainBody.module.scss'
 
 function MainBody({ logOut, user }) {
-	console.log(user)
 	return (
 		<body className={styles.body}>
 			<div className={styles.content}>
