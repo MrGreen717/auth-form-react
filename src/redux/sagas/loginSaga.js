@@ -67,8 +67,8 @@ const clearMessagesValue = () => {}
 function* signInWorker(action) {
 	try {
 		const result = yield call(loginUser, action)
-		yield put(loginSuccess(result, auth.currentUser.accessToken))
-		history.push('/chat')
+		yield put(loginSuccess(result, auth.currentUser))
+		history.push('/success')
 	} catch (error) {
 		const error_message = { code: error.code, message: error.message }
 
@@ -79,8 +79,8 @@ function* signInWorker(action) {
 function* googleAuthWorker(action) {
 	try {
 		const result = yield call(googleAuth, action)
-		yield put(googleAuthSuccess(result, auth.currentUser.accessToken))
-		history.push('/chat')
+		yield put(googleAuthSuccess(result, auth.currentUser))
+		history.push('/success')
 	} catch (error) {
 		console.error(error)
 	}
@@ -89,8 +89,8 @@ function* googleAuthWorker(action) {
 function* signUpWorker(action) {
 	try {
 		const result = yield call(signUpUser, action)
-		yield put(signUpSuccess(result, auth.currentUser.accessToken))
-		history.push('/chat')
+		yield put(signUpSuccess(result, auth.currentUser))
+		history.push('/success')
 	} catch (error) {
 		const error_message = { code: error.code, message: error.message }
 		yield put(singUpError(error_message))

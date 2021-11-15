@@ -9,7 +9,7 @@ import loginReducer from '../reducers/userReducer'
 const persistConfig = {
 	key: 'root',
 	storage,
-	whitelist: ['user']
+	whitelist: ['token', 'user']
 }
 
 const persistedReducer = persistReducer(persistConfig, loginReducer)

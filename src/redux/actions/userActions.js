@@ -7,10 +7,11 @@ export const loginRequest = (user) => {
 	}
 }
 
-export const loginSuccess = (result, token) => {
+export const loginSuccess = (result, userAuth) => {
 	return {
 		type: types.FETCH_MESSAGES_SUCCESS,
-		token
+		token: userAuth.accessToken,
+		user: userAuth
 	}
 }
 
@@ -27,10 +28,11 @@ export const googleAuthRequest = () => {
 	}
 }
 
-export const googleAuthSuccess = (result, token) => {
+export const googleAuthSuccess = (result, userAuth) => {
 	return {
 		type: types.FETCH_GOOGLE_AUTH_SUCCESS,
-		token
+		token: userAuth.accessToken,
+		user: userAuth
 	}
 }
 
@@ -41,11 +43,11 @@ export const signUpRequest = (user) => {
 	}
 }
 
-export const signUpSuccess = (user, token) => {
+export const signUpSuccess = (userAuth) => {
 	return {
 		type: types.FETCH_SIGNUP_SUCCESS,
-		user,
-		token
+		token: userAuth.accessToken,
+		user: userAuth
 	}
 }
 

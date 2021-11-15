@@ -1,6 +1,7 @@
 import * as types from './../constants/constants'
 
 const initialState = {
+	token: null,
 	user: null,
 	loginMessage: null,
 	signUpMessage: null,
@@ -14,7 +15,12 @@ const loginReducer = (state = initialState, action) => {
 			return { ...state, loginMessage: null }
 
 		case types.FETCH_MESSAGES_SUCCESS:
-			return { ...state, user: action.token, loginMessage: null }
+			return {
+				...state,
+				user: action.user,
+				token: action.token,
+				loginMessage: null
+			}
 
 		case types.FETCH_MESSAGES_FAILURE:
 			return {
@@ -26,19 +32,24 @@ const loginReducer = (state = initialState, action) => {
 			return { ...state }
 
 		case types.FETCH_GOOGLE_AUTH_SUCCESS:
-			return { ...state, user: action.token }
+			return { ...state, user: action.user, token: action.token }
 
 		case types.FETCH_LOGOUT_REQUEST:
-			return { ...state, user: null }
+			return { ...state, user: null, token: null }
 
 		case types.FETCH_LOGOUT_SUCCESS:
-			return { ...state, user: null }
+			return { ...state, user: null, token: null }
 
 		case types.FETCH_SIGNUP_REQUEST:
 			return { ...state, signUpMessage: null }
 
 		case types.FETCH_SIGNUP_SUCCESS:
-			return { ...state, signUpMessage: null, user: action.token }
+			return {
+				...state,
+				signUpMessage: null,
+				user: action.user,
+				token: action.token
+			}
 
 		case types.FETCH_SIGNUP_FAILURE:
 			return {

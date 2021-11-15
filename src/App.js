@@ -7,14 +7,14 @@ import RecoveryForm from './components/RecoveryForm/RecoveryForm'
 import UpdatePasswordForm from './components/UpdatePasswordForm/UpdatePasswordForm'
 import MainPage from './components/MainPage/MainPage'
 
-function App({ user }) {
+function App({ token }) {
 	return (
 		<div className="App">
 			<Switch>
-				{user ? (
+				{token ? (
 					<>
-						<Redirect to="/chat" />
-						<Route path="/chat" exact component={MainPage} />
+						<Redirect to="/success" />
+						<Route path="/success" exact component={MainPage} />
 					</>
 				) : (
 					<>
@@ -30,9 +30,8 @@ function App({ user }) {
 }
 
 const mapStateToProps = (state) => {
-	console.log('STATE: ', state)
 	return {
-		user: state.user
+		token: state.token
 	}
 }
 
