@@ -1,4 +1,4 @@
-import { createStore, applyMiddleware, compose } from 'redux'
+import { createStore, applyMiddleware } from 'redux'
 import { rootSaga } from '../sagas'
 import { createBrowserHistory } from 'history'
 import { persistStore, persistReducer } from 'redux-persist'
@@ -16,12 +16,7 @@ const persistedReducer = persistReducer(persistConfig, loginReducer)
 
 const saga = createSagaMiddleware()
 
-const reduxDevTools =
-	window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
-
-const composedEnhancer = compose(applyMiddleware(saga), reduxDevTools)
-
-const store = createStore(persistedReducer, undefined, composedEnhancer)
+const store = createStore(persistedReducer, undefined, applyMiddleware(saga))
 
 saga.run(rootSaga)
 
